@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: gray;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+        }
+
+        .calculadora {
+            width: 300px;
+            background-color: #292828;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0px 10px 30px #41b186;
+
+        }
+
+        #pantalla {
+            background-color: rgb(15, 15, 15);
+            color: rgb(25, 228, 126);
+            text-align: right;
+            padding: 10px;
+            font-size: 3rem;
+            border-radius: 5px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            white-space: nowrap;
+            background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 100'%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle' font-family='cursive, sans-serif' font-size='50' fill='rgba(25, 228, 126, 0.15)'%3EAbraham%3C/text%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+
+        #pantalla::-webkit-scrollbar {
+            height: 8px;
+            display: block;
+        }
+
+        #pantalla::-webkit-scrollbar-thumb {
+            background: #41b186;
+            border-radius: 10px;
+        }
+
+        .botones-calculadora {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 4px;
+
+        }
+
+        .botones-calculadora button {
+            padding: 25px;
+            border: none;
+            border-radius: 5%;
+            cursor: pointer;
+            box-shadow: 0px 4px 5px rgba(1, 63, 37, 0.671);
+            font-size: 13px;
+            font-weight: 999;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        }
+
+        .operadores {
+            background-color: #41b186;
+        }
+
+        .borrar {
+            background-color: rgba(184, 1, 1, 0.877);
+            grid-column: span 4;
+        }
+
+        .botones-calculadora button:hover {
+            background-color: #777575;
+        }
+
+        button.operadores:hover {
+            background-color: #63cfa6;
+        }
+
+        button.borrar:hover {
+            background-color: rgba(197, 68, 35, 0.808);
+        }
+
+        .operadores1 {
+            background-color: #045f94;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="calculadora">
+        <div id="pantalla">0</div>
+        <div class="botones-calculadora">
+            <button class="borrar" onclick="precionarV('c')">c</button>
+            <button onclick="precionarN('1')">1</button>
+            <button onclick="precionarN('2')">2</button>
+            <button onclick="precionarN('3')">3</button>
+            <button onclick="precionarN('4')">4</button>
+            <button onclick="precionarN('5')">5</button>
+            <button onclick="precionarN('6')">6</button>
+            <button onclick="precionarN('7')">7</button>
+            <button class="operadores" onclick="precionarV('/')">÷</button>
+            <button onclick="precionarN('8')">8</button>
+            <button onclick="precionarN('9')">9</button>
+            <button onclick="precionarN('0')">0</button>
+            <button class="operadores" onclick="precionarV('-')">-</button>
+            <button onclick="precionarpunto('.')">.</button>
+            <button class="operadores" onclick="precionarV('+')">+</button>
+            <button class="operadores" onclick="precionarV('x')">x</button>
+            <button class="operadores1" onclick="precionarV('=')">=</button>
+        </div>
+
+    </div>
+    <script>
+
+        let primerValor = 0;
+        let primerValor2 = "0";
+        let signos = "";
+        function moverScroll() {
+            const p = document.getElementById('pantalla');
+            p.scrollLeft = p.scrollWidth;
+        }
+        function precionarN(numero) {
+            if (primerValor == 0) {
+                primerValor = numero;
+            } else {
+                primerValor = primerValor + numero;
+            }
+            if (signos == "") {
+                document.getElementById('pantalla').innerHTML = primerValor;
+            } else if (primerValor === 0) {
+                document.getElementById('pantalla').innerHTML = primerValor2 + " " + signos;
+            } else {
+                document.getElementById('pantalla').innerHTML = primerValor2 + " " + signos + " " + primerValor;
+            }
+            moverScroll();
+        }
+        function precionarV(operador) {
+            if (operador == "c") {
+                primerValor = 0;
+                primerValor2 = "0";
+                signos = "";
+            } else if (operador != "=") {
+                primerValor2 = primerValor;
+                signos = operador;
+                primerValor = 0;
+            } else if (operador == "=") {
+                if (primerValor == 0) {
+                    document.getElementById('pantalla').innerHTML = "NO DEFINIDA LOL XD";
+                    return;
+                }
+                switch (signos) {
+                    case "x": primerValor = Number(primerValor2) * Number(primerValor);
+                        break;
+                    case "/": primerValor = Number(primerValor2) / Number(primerValor);
+
+                        break;
+                    case "-": primerValor = Number(primerValor2) - Number(primerValor);
+                        break;
+                    case "+": primerValor = Number(primerValor2) + Number(primerValor);
+                        break;
+                    default: "error";
+                        break;
+                }
+                signos = "";
+                primerValor2 = "0"
+
+
+            }
+            if (signos == "") {
+                document.getElementById('pantalla').innerHTML = primerValor;
+            } else if (primerValor === 0) {
+                document.getElementById('pantalla').innerHTML = primerValor2 + " " + signos;
+            } else {
+                document.getElementById('pantalla').innerHTML = primerValor2 + " " + signos + " " + primerValor;
+            }
+
+        }
+        function precionarpunto(punto) {
+            if (!String(primerValor).includes('.')) {
+                primerValor = primerValor + punto;
+            }
+            document.getElementById('pantalla').innerHTML = primerValor;
+
+        }
+
+
+    </script>
+</body>
+
+</html>
