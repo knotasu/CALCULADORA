@@ -42,7 +42,7 @@
             justify-content: flex-end;
             color: rgb(25, 228, 126);
             padding: 20px;
-            font-size: 5rem;
+            font-size: 2rem;
             overflow-x: auto;
             white-space: nowrap;
             background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 100'%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle' font-family='cursive, sans-serif' font-size='30' fill='rgba(25, 228, 126, 0.1)'%3EAbraham%3C/text%3E%3C/svg%3E");
@@ -96,6 +96,38 @@
         #pantalla::-webkit-scrollbar {
             display: none;
         }
+        
+.mando {
+    grid-column: span 2; 
+    aspect-ratio: auto;
+    height: 65px;
+    border-radius: 35px;
+    margin-bottom: 5px;
+    font-size: 1.5rem;
+}
+
+
+.borrar {
+    background-color: #a5a5a5;
+    color: black;
+}
+
+
+.borrar-uno {
+    background-color: #5c0a0a; 
+    color: white;
+}
+
+
+button {
+    box-shadow: 0 4px 0 #111; 
+}
+
+button:active {
+    opacity: 0.7;
+    transform: translateY(3px); 
+    box-shadow: none;
+}
     </style>
 </head>
 
@@ -103,7 +135,8 @@
     <div class="calculadora">
         <div id="pantalla">0</div>
         <div class="botones-calculadora">
-            <button class="borrar" onclick="precionarV('c')">c</button>
+            <button class="mando borrar" onclick="precionarV('c')">c</button>
+            <button class="mando borrar-uno" style="color: #a00202;" id="borarN" onclick="borrarNumero()">D</button>
             <button onclick="precionarN('1')">1</button>
             <button onclick="precionarN('2')">2</button>
             <button onclick="precionarN('3')">3</button>
@@ -143,7 +176,7 @@
             } else if (primerValor === 0) {
                 document.getElementById('pantalla').innerHTML = primerValor2 + " " + signos;
             } else {
-                document.getElementById('pantalla').innerHTML = primerValor2 + " " + signos + " " + primerValor;
+                document.getElementById('pantalla').innerHTML=primerValor2+" "+signos+" "+primerValor;
             }
             moverScroll();
         }
@@ -155,10 +188,11 @@
             } else if (operador != "=") {
                 primerValor2 = primerValor;
                 signos = operador;
-                primerValor = 0;
+                primerValor=0;
+                
             } else if (operador == "=") {
                 if (primerValor == 0) {
-                    document.getElementById('pantalla').innerHTML = "NO DEFINIDA LOL XD";
+                    document.getElementById('pantalla').innerHTML = "VALOR 0 XD <br> hazlo de nuevo";
                     return;
                 }
                 switch (signos) {
@@ -194,6 +228,26 @@
             }
             document.getElementById('pantalla').innerHTML = primerValor;
 
+        }
+        function borrarNumero(valor) {
+            let sifra = String(primerValor);
+            if (sifra.length>1) {
+                sifra=sifra.slice(0,-1);
+            } else {
+                sifra =  "0";
+            }
+            if (sifra.includes('.')) {
+                primerValor=sifra;
+            } else {
+                primerValor=Number(sifra);
+            }
+            if (signos=="") {
+                document.getElementById('pantalla').innerHTML=primerValor;
+            } else if (signos === 0) {
+                document.getElementById('pantalla').innerHTML=primerValor2+" "+signos;
+            } else {
+                document.getElementById('pantalla').innerHTML=primerValor2+" "+signos+" "+primerValor;
+            }
         }
 
 
